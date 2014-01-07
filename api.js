@@ -27,7 +27,6 @@ client.open(function (err, client) {
 
 router.get('/logs', function (req, res) {
   var regex = !(req.query.regex === 'false');
-
   var namespace = req.query.namespace;
   var level = req.query.level;
   var filter = req.query.filter;
@@ -36,7 +35,7 @@ router.get('/logs', function (req, res) {
 
   var query = {};
   if (namespace) query.namespace = regex ? new RegExp('^.*' + namespace + '.*$') : namespace;
-  if (level) query.level = regex ? new RegExp('^.*' + level + '.*$') : level;
+  if (level) query.level = new RegExp('^.*' + level + '.*$');
   if (begin || end) {
     query.date = {};
     if (begin) query.date.$gte = begin;

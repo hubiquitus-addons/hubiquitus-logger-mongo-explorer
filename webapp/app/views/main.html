@@ -1,1 +1,43 @@
-<h1>Logs</h1>
+<form class="form-horizontal" role="form" ng-submit="search()">
+  <div class="form-group">
+    <label for="namespace" class="col-sm-2 control-label">Namespace</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" name="namespace" id="namespace" placeholder="Namespace" ng-model="searchForm.namespace">
+    </div>
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="regex" ng-model="searchForm.regex"> Regex
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="level" class="col-sm-2 control-label">Level</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" name="level" id="level" placeholder="Level" ng-model="searchForm.level">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="filter" class="col-sm-2 control-label">Filtre</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" name="filter" id="filter" placeholder="Filtre" ng-model="searchForm.filter">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="begin" class="col-sm-2 control-label">Début</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="begin" id="begin" placeholder="Début" ng-model="searchForm.begin">
+    </div>
+    <label for="end" class="col-sm-1 control-label">Fin</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="end" id="end" placeholder="Fin"  ng-model="searchForm.end">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Rafraichir</button>
+    </div>
+  </div>
+</form>
+{{ logs }}

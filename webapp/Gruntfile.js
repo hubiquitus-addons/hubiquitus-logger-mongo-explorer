@@ -387,20 +387,20 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
-    //'concat',
+    'concat',
     'ngmin',
     'copy:dist',
     'cdnify',
     'cssmin',
     'uglify',
-    'rev',
+    //'rev',
     'usemin',
     'htmlmin'
   ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
-    //'test',
+    'test',
     'build'
   ]);
 };
