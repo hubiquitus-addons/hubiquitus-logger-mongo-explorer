@@ -28,8 +28,7 @@
   <div class="form-group">
     <label for="level" class="col-sm-2 control-label">Level</label>
     <div class="col-sm-5">
-      <select class="form-control" id="level" ng-model="searchForm.level">
-        <option ng-repeat="level in levels" value="{{ level.value }}">{{ level.name }}</option>
+      <select class="form-control" id="level" ng-model="searchForm.level" ng-options="level for level in levels">
       </select>
     </div>
     <div class="col-sm-4">

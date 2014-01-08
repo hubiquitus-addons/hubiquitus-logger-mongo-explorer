@@ -14,13 +14,7 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
 
   $scope.logs = [];
 
-  $scope.levels = [
-    {name: 'Trace', value: 'trace'},
-    {name: 'Debug', value: 'debug'},
-    {name: 'Info', value: 'info'},
-    {name: 'Warning', value: 'warn'},
-    {name: 'Error', value: 'err'}
-  ];
+  $scope.levels = ['trace', 'debug', 'info', 'warn', 'err'];
 
   $scope.refresh = function () {
     $scope.page = 0;
