@@ -1,5 +1,6 @@
 var express = require('express');
 var mongo = require('mongodb');
+var async = require('async');
 
 var router = new express.Router();
 exports.middleware = router.middleware;
@@ -32,6 +33,8 @@ router.get('/logs', function (req, res) {
   var filter = req.query.filter;
   var begin = parseInt(req.query.begin);
   var end = parseInt(req.query.end);
+  var idx = parseInt(req.query.idx) || 0;
+  var limit = parseInt(req.query.limit) || 30;
 
   var query = {};
   if (namespace) query.namespace = regex ? new RegExp('^.*' + namespace + '.*$') : namespace;
@@ -43,9 +46,24 @@ router.get('/logs', function (req, res) {
   }
   if (filter) query.messages = new RegExp('^.*' + filter + '.*$');
 
-  console.log('/logs', new Date(), query);
+  console.log('/logs', new Date(), {query: query, idx: idx, limit: limit});
 
-  db.collection(conf.collection).find(query).toArray(function (err, results) {
-    res.json(results);
+  var cursor = db.collection(conf.collection).find(query);
+  var result = {};
+  async.parallel([
+    function (done) {
+      cursor.skip(idx * limit).limit(limit).sort({date: 1}).toArray(function (err, data) {
+        result.logs = data;
+        done();
+      });
+    },
+    function (done) {
+      cursor.count(function (err, data) {
+        result.count = data;
+        done();
+      });
+    }
+  ], function () {
+    res.json(result);
   });
 });
