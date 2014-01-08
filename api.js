@@ -1,6 +1,7 @@
 var express = require('express');
 var mongo = require('mongodb');
 var async = require('async');
+var _ = require('lodash');
 
 var router = new express.Router();
 exports.middleware = router.middleware;
@@ -27,9 +28,12 @@ client.open(function (err, client) {
 /* Rest handlers */
 
 router.get('/logs', function (req, res) {
+  var levels = ['trace', 'debug', 'info', 'warn', 'err'];
+
   var regex = !(req.query.regex === 'false');
   var namespace = req.query.namespace;
   var level = req.query.level;
+  var levelsAbove = !(req.query.levelsAbove === 'false');
   var filter = req.query.filter;
   var begin = parseInt(req.query.begin);
   var end = parseInt(req.query.end);
@@ -38,7 +42,20 @@ router.get('/logs', function (req, res) {
 
   var query = {};
   if (namespace) query.namespace = regex ? new RegExp('^.*' + namespace + '.*$') : namespace;
-  if (level) query.level = new RegExp('^.*' + level + '.*$');
+  if (level) {
+    var regexLevel = null;
+    var indexLevel = _.indexOf(levels, level);
+    if (!levelsAbove || indexLevel === levels.length - 1) {
+      regexLevel = '^.*' + level + '.*$';
+    } else {
+      regexLevel = '^(.*' + level + '.*)';
+      for (var k = indexLevel + 1 ; k < levels.length ; k++) {
+        regexLevel += '|(.*' + levels[k] + '.*)';
+      }
+      regexLevel += '$';
+    }
+    query.level = new RegExp(regexLevel);
+  }
   if (begin || end) {
     query.date = {};
     if (begin) query.date.$gte = begin;
@@ -52,7 +69,7 @@ router.get('/logs', function (req, res) {
   var result = {};
   async.parallel([
     function (done) {
-      cursor.skip(idx * limit).limit(limit).sort({date: 1}).toArray(function (err, data) {
+      cursor.skip(idx).limit(limit).sort({date: 1}).toArray(function (err, data) {
         result.logs = data;
         done();
       });

@@ -11,69 +11,115 @@
   </div>
 </header>
 
-<form class="form-horizontal" role="form" ng-submit="search()">
+<form class="form-horizontal" role="form" ng-submit="refresh()">
   <div class="form-group">
     <label for="namespace" class="col-sm-2 control-label">Namespace</label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" name="namespace" id="namespace" placeholder="Namespace" ng-model="searchForm.namespace">
+      <input type="text" class="form-control" id="namespace" placeholder="Namespace" ng-model="searchForm.namespace">
     </div>
     <div class="col-sm-4">
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="regex" ng-model="searchForm.regex"> Regex
+          <input type="checkbox" ng-model="searchForm.regex"> Regex
         </label>
       </div>
     </div>
   </div>
   <div class="form-group">
     <label for="level" class="col-sm-2 control-label">Level</label>
-    <div class="col-sm-9">
-      <input type="text" class="form-control" name="level" id="level" placeholder="Level" ng-model="searchForm.level">
+    <div class="col-sm-5">
+      <select class="form-control" id="level" ng-model="searchForm.level">
+        <option ng-repeat="level in levels" value="{{ level.value }}">{{ level.name }}</option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="searchForm.levelsAbove"> Include above levels
+        </label>
+      </div>
     </div>
   </div>
   <div class="form-group">
-    <label for="filter" class="col-sm-2 control-label">Filtre</label>
+    <label for="filter" class="col-sm-2 control-label">Filter</label>
     <div class="col-sm-9">
-      <input type="text" class="form-control" name="filter" id="filter" placeholder="Filtre" ng-model="searchForm.filter">
+      <input type="text" class="form-control" id="filter" placeholder="Filter" ng-model="searchForm.filter">
     </div>
   </div>
   <div class="form-group">
-    <label for="begin" class="col-sm-2 control-label">Début</label>
+    <label for="begin" class="col-sm-2 control-label">Begin</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" name="begin" id="begin" placeholder="Début" ng-model="searchForm.begin">
+      <div class="dropdown">
+        <a class="dropdown-toggle" id="begindDD" role="button" data-toggle="dropdown" data-target="#" href="#/">
+          <div class="input-group">
+            <input type="text" class="form-control" id="begin" ng-model="searchForm.begin">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="fakeBeginDD">
+          <datetimepicker ng-model="searchForm.begin" data-datetimepicker-config="{dropdownSelector: '#beginDD'}"></datetimepicker>
+        </ul>
+      </div>
     </div>
-    <label for="end" class="col-sm-1 control-label">Fin</label>
+    <label for="end" class="col-sm-1 control-label">End</label>
     <div class="col-sm-3">
-      <input type="text" class="form-control" name="end" id="end" placeholder="Fin"  ng-model="searchForm.end">
+      <div class="dropdown">
+        <a class="dropdown-toggle" id="endDD" role="button" data-toggle="dropdown" data-target="#" href="#/">
+          <div class="input-group">
+            <input type="text" class="form-control" id="end" ng-model="searchForm.end">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="fakeEndDD">
+          <datetimepicker ng-model="searchForm.end" data-datetimepicker-config="{dropdownSelector: '#endDD'}"></datetimepicker>
+        </ul>
+      </div>
     </div>
-    <label for="limit" class="col-sm-1 control-label">Limite</label>
+    <label for="limit" class="col-sm-1 control-label">Limit</label>
     <div class="col-sm-1">
-      <input type="text" class="form-control" name="limit" id="limit" placeholder="Limite"  ng-model="searchForm.limit">
+      <input type="text" class="form-control" id="limit" placeholder="/page" ng-model="searchForm.limit">
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">Rafraichir</button>
+      <button type="submit" class="btn btn-primary">Refresh</button>
     </div>
   </div>
 </form>
 
 <div class="pagination-wrapper">
   <ul class="pagination">
-    <li ng-class="{'disabled': idx == 0}"><a href="#/" ng-click="prev()">&laquo;</a></li>
-    <li><a href="#/">{{ idx + 1 }} / {{ count }}</a></li>
-    <li ng-class="{'disabled': idx + 1 == count}"><a href="#/" ng-click="next()">&raquo;</a></li>
+    <li ng-class="{'disabled': page == 0}"><a href="#/" ng-click="prev()">&laquo;</a></li>
+    <li><a href="#/">{{ page + 1 }} / {{ pages }}</a></li>
+    <li ng-class="{'disabled': page + 1 == pages}"><a href="#/" ng-click="next()">&raquo;</a></li>
   </ul>
 </div>
 
 <div>
-  {{ logs }}
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Namespace</th>
+        <th>Level</th>
+        <th>Date</th>
+        <th>Messages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="log in logs" class="{{ log.level | bootstraplvl }}">
+        <td>{{ log.namespace }}</td>
+        <td>{{ log.level }}</td>
+        <td>{{ log.date | prettydate }}</td>
+        <td><pre>{{ log.messages | prettyjson }}</pre></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="pagination-wrapper">
   <ul class="pagination">
-    <li ng-class="{'disabled': idx == 0}"><a href="#/" ng-click="prev()">&laquo;</a></li>
-    <li><a href="#/">{{ idx + 1 }} / {{ count }}</a></li>
-    <li ng-class="{'disabled': idx + 1 == count}"><a href="#/" ng-click="next()">&raquo;</a></li>
+    <li ng-class="{'disabled': page == 0}"><a href="#/" ng-click="prev()">&laquo;</a></li>
+    <li><a href="#/">{{ page + 1 }} / {{ pages }}</a></li>
+    <li ng-class="{'disabled': page + 1 == pages}"><a href="#/" ng-click="next()">&raquo;</a></li>
   </ul>
 </div>
