@@ -6,28 +6,40 @@ var _ = require('lodash');
 var router = new express.Router();
 exports.middleware = router.middleware;
 
-var conf = {host: 'localhost', port: 27017, dbname: 'logs', collection: 'logs'};
-
-/* Mongo management */
-
 var db = null;
-var server = new mongo.Server(conf.host, conf.port, {auto_reconnect: true});
-var client = new mongo.MongoClient(server);
-client.open(function (err, client) {
-  if (err) throw new Error('Failed to connect to mongo - ' + err);
-  db = client.db(conf.dbname);
+var conf = null;
+var debug = false;
 
-  if (conf.username) {
-    db.authenticate(conf.username, conf.password, function (err, result) {
-      if (err) throw new Error('Failed to authenticate - ' + err);
-      if (result !== true) throw new Error('Failed to authenticate');
-    });
-  }
-});
+exports.configure = function (data) {
+  conf = data.mongo;
+  debug = data.debug;
+
+  /* Mongo management */
+
+  var server = new mongo.Server(conf.host, conf.port, {auto_reconnect: true});
+  var client = new mongo.MongoClient(server);
+  client.open(function (err, client) {
+    if (err) throw new Error('Failed to connect to mongo - ' + err);
+    db = client.db(conf.dbname);
+    console.log('Connection to database established');
+
+    if (conf.username) {
+      db.authenticate(conf.username, conf.password, function (err, result) {
+        if (err) throw new Error('Failed to authenticate - ' + err);
+        if (result !== true) throw new Error('Failed to authenticate');
+        console.log('Authentication to database done');
+      });
+    }
+  });
+};
 
 /* Rest handlers */
 
 router.get('/logs', function (req, res) {
+  if (!db) {
+    return console.error('Request /logs aborted : no database connection');
+  }
+
   var levels = ['trace', 'debug', 'info', 'warn', 'err'];
 
   var regex = !(req.query.regex === 'false');
@@ -63,8 +75,6 @@ router.get('/logs', function (req, res) {
   }
   if (filter) query.messages = new RegExp('^.*' + filter + '.*$');
 
-  console.log('/logs', new Date(), {query: query, idx: idx, limit: limit});
-
   var cursor = db.collection(conf.collection).find(query);
   var result = {};
   async.parallel([
@@ -81,6 +91,11 @@ router.get('/logs', function (req, res) {
       });
     }
   ], function () {
+    if (debug) {
+      console.log('\nRequest /logs', new Date());
+      console.log('Query', {query: query, idx: idx, limit: limit});
+      console.log('Result', {count: result.count})
+    }
     res.json(result);
   });
 });

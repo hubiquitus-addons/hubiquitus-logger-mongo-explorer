@@ -5,7 +5,11 @@
     "type": "git",
     "url": "https://github.com/hubiquitus-addons/hubiquitus-logger-mongo-explorer"
   },
+  "bin": {
+    "h-mongo-explorer": "./app.js"
+  },
   "dependencies": {
+    "commander": "2.1.*",
     "async": "0.2.*",
     "express": "3.*",
     "mongodb": "1.3.*",
