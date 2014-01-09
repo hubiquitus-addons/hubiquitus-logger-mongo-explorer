@@ -126,7 +126,7 @@
         <td>{{ log.namespace }}</td>
         <td>{{ log.level }}</td>
         <td>{{ log.date | prettydate }}</td>
-        <td><pre>{{ log.messages | prettyjson }}</pre></td>
+        <td><pre>{{ log.messages | json }}</pre></td>
       </tr>
     </tbody>
   </table>
