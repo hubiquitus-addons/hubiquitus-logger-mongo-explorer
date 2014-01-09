@@ -5,3 +5,15 @@ body {
 .pagination-wrapper {
   text-align: center;
 }
+
+.logs-table-namespace {
+    width: 200px;
+}
+
+.logs-table-level {
+    width: 100px;
+}
+
+.logs-table-date {
+    width: 150px;
+}
