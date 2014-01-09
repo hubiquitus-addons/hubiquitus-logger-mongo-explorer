@@ -9,6 +9,7 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
     limit: 30
   };
 
+  $scope.count = 0;
   $scope.page = 0;
   $scope.pages = 1;
 
@@ -46,6 +47,7 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function (data) {
       $scope.logs = data.logs;
+      $scope.count = data.count;
       $scope.pages = Math.ceil(data.count / $scope.searchForm.limit) || 1;
     });
   }
