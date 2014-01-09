@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var express = require('express');
 var api = require('./api');
 var commander = require('commander');
