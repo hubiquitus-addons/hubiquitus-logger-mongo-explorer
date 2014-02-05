@@ -10,10 +10,10 @@ commander
   .version('0.0.1')
   .option('-p, --port [n]', 'HTTP port', parseInt)
   .option('-d, --debug', 'Debug')
-  .option('-mhost, --mongo-host [str]', 'Mongo host')
-  .option('-mport, --mongo-port [n]', 'Mongo port', parseInt)
-  .option('-mdb, --mongo-dbname [str]', 'Mongo dbname')
-  .option('-mcoll, --mongo-collection [str]', 'Mongo collection')
+  .option('--mongo-host [str]', 'Mongo host')
+  .option('--mongo-port [n]', 'Mongo port', parseInt)
+  .option('--mongo-dbname [str]', 'Mongo dbname')
+  .option('--mongo-collection [str]', 'Mongo collection')
   .parse(process.argv);
 
 var conf = {
