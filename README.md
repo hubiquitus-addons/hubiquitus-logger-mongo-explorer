@@ -1,2 +1,1 @@
-hubiquitus-logger-mongo-explorer
-================================
+# Hubiquitus logger mongo explorer

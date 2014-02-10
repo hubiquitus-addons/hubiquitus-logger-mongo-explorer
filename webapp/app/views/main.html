@@ -95,42 +95,51 @@
   </ul>
 </div>
 
-<div>
-  <form class="form-inline" role="form">
-    <div class="form-group">
-      <input type="text" id="quickfilter" class="form-control" placeholder="Quick filter" ng-model="quickfilter.$">
+<div ng-switch="spinner">
+  <div ng-switch-when="false">
+    <div>
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          <input type="text" id="quickfilter" class="form-control" placeholder="Quick filter" ng-model="quickfilter.$">
+        </div>
+      </form><br>
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th class="logs-table-namespace">
+            Namespace<br>
+            <input class="form-control" type="text" ng-model="quickfilter.namespace" placeholder="Namespace QF">
+          </th>
+          <th class="logs-table-level">
+            Level<br>
+            <input class="form-control" type="text" ng-model="quickfilter.level" placeholder="Level QF">
+          </th>
+          <th class="logs-table-date">
+            Date<br>
+            <input class="form-control" type="text" ng-model="quickfilter.date" placeholder="Date QF">
+          </th>
+          <th>
+            Messages<br>
+            <input class="form-control" type="text" ng-model="quickfilter.messages" placeholder="Messages QF">
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="log in logs | filter:quickfilter" class="{{ log.level | bootstraplvl }}">
+          <td>{{ log.namespace }}</td>
+          <td>{{ log.level }}</td>
+          <td>{{ log.date | prettydate }}</td>
+          <td><pre>{{ log.messages | json }}</pre></td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-  </form><br>
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th class="logs-table-namespace">
-          Namespace<br>
-          <input class="form-control" type="text" ng-model="quickfilter.namespace" placeholder="Namespace QF">
-        </th>
-        <th class="logs-table-level">
-          Level<br>
-          <input class="form-control" type="text" ng-model="quickfilter.level" placeholder="Level QF">
-        </th>
-        <th class="logs-table-date">
-          Date<br>
-          <input class="form-control" type="text" ng-model="quickfilter.date" placeholder="Date QF">
-        </th>
-        <th>
-          Messages<br>
-          <input class="form-control" type="text" ng-model="quickfilter.messages" placeholder="Messages QF">
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="log in logs | filter:quickfilter" class="{{ log.level | bootstraplvl }}">
-        <td>{{ log.namespace }}</td>
-        <td>{{ log.level }}</td>
-        <td>{{ log.date | prettydate }}</td>
-        <td><pre>{{ log.messages | json }}</pre></td>
-      </tr>
-    </tbody>
-  </table>
+  </div>
+  <div ng-switch-when="true">
+    <div id="spinner">
+      <img src="images/spinner.svg" width="110">
+    </div>
+  </div>
 </div>
 
 <div class="pagination-wrapper">

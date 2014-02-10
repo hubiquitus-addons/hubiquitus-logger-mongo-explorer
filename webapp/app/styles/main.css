@@ -17,3 +17,9 @@ body {
 .logs-table-date {
     width: 150px;
 }
+
+#spinner {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+}

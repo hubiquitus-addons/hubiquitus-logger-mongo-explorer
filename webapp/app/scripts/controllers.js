@@ -12,6 +12,7 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
   $scope.count = 0;
   $scope.page = 0;
   $scope.pages = 1;
+  $scope.spinner = 'false';
 
   $scope.logs = [];
 
@@ -38,6 +39,7 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
   };
 
   function search() {
+    $scope.spinner = 'true';
     $scope.searchForm.idx = $scope.page * $scope.searchForm.limit;
     $scope.searchForm.begin = new Date($scope.searchForm.begin).getTime();
     $scope.searchForm.end = new Date($scope.searchForm.end).getTime();
@@ -46,6 +48,7 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
       url: '/api/logs?' + $.param($scope.searchForm),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'}
     }).success(function (data) {
+      $scope.spinner = 'false';
       $scope.logs = data.logs;
       $scope.count = data.count;
       $scope.pages = Math.ceil(data.count / $scope.searchForm.limit) || 1;
