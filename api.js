@@ -79,7 +79,7 @@ router.get('/logs', function (req, res) {
   var result = {};
   async.parallel([
     function (done) {
-      cursor.skip(idx).limit(limit).sort({date: 1}).toArray(function (err, data) {
+      cursor.skip(idx).limit(limit).sort({date: -1}).toArray(function (err, data) {
         result.logs = data;
         done();
       });
