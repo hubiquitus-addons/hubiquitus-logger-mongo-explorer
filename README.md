@@ -23,4 +23,4 @@ The available options are :
 
 Screenshot :
 
-![Logs explorer](https://github.com/hubiquitus-addons/hubiquitus-logger-mongo-explorer/screenshots/interface.png)
+![Logs explorer](https://raw.github.com/hubiquitus-addons/hubiquitus-logger-mongo-explorer/master/screenshots/interface.png)
