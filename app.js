@@ -3,11 +3,12 @@
 var express = require('express');
 var api = require('./api');
 var commander = require('commander');
+var version = require('./package').version;
 
 var app = express();
 
 commander
-  .version('0.0.1')
+  .version(version)
   .option('-p, --port [n]', 'HTTP port', parseInt)
   .option('-d, --debug', 'Debug')
   .option('--mongo-host [str]', 'Mongo host')
