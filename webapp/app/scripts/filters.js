@@ -21,6 +21,6 @@ angular.module('webapp').filter('bootstraplvl', function () {
 
 angular.module('webapp').filter('prettydate', function () {
   return function (input) {
-    return moment(input).format('YYYY-MM-DD hh:mm:ss Z');
+    return moment(input).format('YYYY-MM-DD HH:mm:ss');
   };
 });

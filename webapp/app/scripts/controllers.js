@@ -12,6 +12,8 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
   $scope.count = 0;
   $scope.page = 0;
   $scope.pages = 1;
+  $scope.pageToGoto = 0;
+
   $scope.spinner = 'false';
 
   $scope.logs = [];
@@ -21,6 +23,17 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
   $scope.refresh = function () {
     $scope.page = 0;
     $scope.pages = 1;
+    search();
+  };
+
+  $scope.gotopage = function () {
+    var page = $scope.pageToGoto - 1; // indexes starts at 0; human will enter 1
+    if (page < 0) {
+      page = 0;
+    } else if (page > $scope.pages - 1) {
+      page = $scope.pages - 1;
+    }
+    $scope.page = page;
     search();
   };
 
