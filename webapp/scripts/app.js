@@ -1,9 +1,6 @@
 'use strict';
 
 angular.module('webapp', [
-  'ngCookies',
-  'ngResource',
-  'ngSanitize',
   'ngRoute',
   'ui.bootstrap.datetimepicker'
 ]).config(function ($routeProvider) {

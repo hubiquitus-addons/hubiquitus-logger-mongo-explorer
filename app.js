@@ -32,7 +32,7 @@ console.log('Using configuration', conf);
 
 api.configure(conf);
 app.use('/api', api.middleware);
-app.use(express.static(__dirname + '/webapp/dist'));
+app.use(express.static(__dirname + '/webapp'));
 
 app.listen(conf.port);
 console.log('App running at http://*:' + conf.port);
