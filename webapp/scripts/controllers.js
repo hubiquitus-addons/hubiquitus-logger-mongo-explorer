@@ -14,6 +14,8 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
   $scope.pages = 1;
   $scope.pageToGoto = 0;
 
+  $scope.wrapText = false;
+
   $scope.spinner = 'false';
 
   $scope.logs = [];
@@ -49,6 +51,10 @@ angular.module('webapp').controller('MainCtrl', function ($scope, $http) {
       $scope.page++;
       search();
     }
+  };
+
+  $scope.wrapLogMessages = function (wrapText) {
+    $scope.wrapText = wrapText;
   };
 
   function search() {
